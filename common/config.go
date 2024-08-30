@@ -47,6 +47,7 @@ type ConnectorConfig struct {
 	Redis      *RedisConnectorConfig      `yaml:"redis" json:"redis"`
 	DynamoDB   *DynamoDBConnectorConfig   `yaml:"dynamodb" json:"dynamodb"`
 	PostgreSQL *PostgreSQLConnectorConfig `yaml:"postgresql" json:"postgresql"`
+	Methods    []*MethodCacheConfig       `yaml:"methods" json:"methods"`
 }
 
 type MemoryConnectorConfig struct {
@@ -74,6 +75,11 @@ func (r *RedisConnectorConfig) MarshalJSON() ([]byte, error) {
 		"password": "REDACTED",
 		"db":       r.DB,
 	})
+}
+
+type MethodCacheConfig struct {
+	Method string `yaml:"method" json:"method"`
+	TTL    string `yamle:"ttl" json:"ttl"`
 }
 
 type DynamoDBConnectorConfig struct {
