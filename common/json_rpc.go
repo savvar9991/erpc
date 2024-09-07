@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"log"
 	"sort"
 	"strings"
 
@@ -50,6 +51,13 @@ func (r *JsonRpcResponse) ParsedResult() (interface{}, error) {
 		return nil, nil
 	}
 
+	defer func() {
+		if rec := recover(); rec != nil {
+			// Catch the panic and log the raw JSON
+			log.Printf("Panic occurred: %v\n", rec)
+			log.Printf("Raw JSON response: %s\n", r.Result)
+		}
+	}()
 	err := sonic.Unmarshal(r.Result, &r.parsedResult)
 	if err != nil {
 		return nil, err
